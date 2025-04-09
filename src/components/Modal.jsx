@@ -1,13 +1,15 @@
-export default function Modal() {
+export default function Modal({ toggleView, modalView }) {
   return (
     <div
       id="modal"
-      className="modal w-full h-full fixed flex justify-center top-0 md:p-5 bg-gray-600/50 hidden"
+      className={`modal w-full h-full fixed flex justify-center top-0 md:p-5 bg-gray-600/50 ${
+        modalView ? "" : "hidden"
+      }`}
     >
       <div className="modal-content w-full h-4/5 max-w-5xl p-4 relative flex flex-col gap-4 bg-white md:rounded-lg">
         <div className="flex justify-between font-semibold">
           <p>Edit your search</p>
-          <button className="close hover:cursor-pointer">
+          <button className="close hover:cursor-pointer" onClick={toggleView}>
             <img src="/icons/close.svg" alt="close" className="w-6" />
           </button>
         </div>
@@ -26,7 +28,10 @@ export default function Modal() {
               />
             </div>
             <div className="py-2 px-4 flex flex-col lg:flex-1 border-b-0">
-              <label htmlFor="guest" className="font-semibold hover:cursor-pointer">
+              <label
+                htmlFor="guest"
+                className="font-semibold hover:cursor-pointer"
+              >
                 GUESTS
               </label>
               <input
@@ -58,7 +63,11 @@ export default function Modal() {
         </form>
 
         <div className="options lg:flex">
-          <ul className="option-locations flex flex-col py-2 px-4 gap-2 hidden"></ul>
+          <ul
+            className={`option-locations flex flex-col py-2 px-4 gap-2 ${
+              modalView ? "" : "hidden"
+            }`}
+          ></ul>
 
           <ul className="option-guests mx-[calc(100%/3)] flex flex-col py-2 px-4 gap-6 hidden">
             <li className="flex flex-col">

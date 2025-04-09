@@ -1,4 +1,4 @@
-export default function Header() {
+export default function Header({ toggleView }) {
   return (
     <header className="flex justify-center p-2 md:p-5">
       <div className="w-full max-w-5xl gap-4 flex flex-col md:flex-row md:justify-between">
@@ -8,6 +8,7 @@ export default function Header() {
         <div
           id="search-menu"
           className="w-full max-w-sm self-center grid grid-cols-[2fr_2fr_1fr] hover:cursor-pointer border-1 border-gray-300 rounded-2xl divide-x-1 divide-gray-300 shadow-[0px_4px_14px_2px_rgba(0,0,0,0.08)]"
+          onClick={toggleView}
         >
           <button
             id="search-location-btn"
