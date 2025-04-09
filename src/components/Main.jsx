@@ -3,6 +3,7 @@ import Stay from "./Stay";
 
 export default function Main() {
   const { loading, response, error } = useData("/data/stays.json");
+  const responseNum = response?.length > 12 ? "12+" : response?.length || 0;
 
   return (
     <main className="px-2 py-5 flex flex-col gap-6 items-center md:p-5">
@@ -11,7 +12,7 @@ export default function Main() {
           Stays
         </h2>
         <p>
-          <span className="stays-number">0</span> stays
+          <span className="stays-number">{responseNum}</span> stays
         </p>
       </div>
 
