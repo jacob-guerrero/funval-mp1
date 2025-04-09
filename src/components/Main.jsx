@@ -1,19 +1,30 @@
+import useData from "../hooks/useData";
+import Stay from "./Stay";
+
 export default function Main() {
+  const { loading, response, error } = useData("/data/stays.json");
+
   return (
-    <main class="px-2 py-5 flex flex-col gap-6 items-center md:p-5">
-      <div class="w-full max-w-5xl flex justify-between items-center">
-        <h2 id="stays-title" class="text-2xl font-bold">
+    <main className="px-2 py-5 flex flex-col gap-6 items-center md:p-5">
+      <div className="w-full max-w-5xl flex justify-between items-center">
+        <h2 id="stays-title" className="text-2xl font-bold">
           Stays
         </h2>
         <p>
-          <span class="stays-number">0</span> stays
+          <span className="stays-number">0</span> stays
         </p>
       </div>
 
       <ul
         id="stays-container"
-        class="w-full max-w-5xl grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] justify-items-center gap-4"
-      ></ul>
+        className="w-full max-w-5xl grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] justify-items-center gap-4"
+      >
+        {!loading
+          ? response?.map((item) => {
+              return <Stay item={item} key={item.id} />;
+            })
+          : ""}
+      </ul>
     </main>
   );
 }
