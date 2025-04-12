@@ -1,8 +1,6 @@
-import useData from "../hooks/useData";
 import Stay from "./Stay";
 
-export default function Main() {
-  const { loading, response, error } = useData("/data/stays.json");
+export default function Main({ loading, response, error }) {
   const responseNum = response?.length > 12 ? "12+" : response?.length || 0;
 
   return (

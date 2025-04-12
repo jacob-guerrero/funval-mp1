@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import LocationOption from "./LocationOption";
 
-export default function Modal({ toggleView, modalView }) {
+export default function Modal({ toggleView, modalView, response }) {
   const [activeOption, setActiveOption] = useState("");
+  const [input, setInput] = useState("");
+  const [locations, setLocations] = useState([]);
   const activeOptionGuest = activeOption === "guest" ? "" : "hidden";
   const activeOptionLocation = activeOption === "location" ? "" : "hidden";
 
@@ -13,6 +16,27 @@ export default function Modal({ toggleView, modalView }) {
       setActiveOption("guest");
     }
   };
+
+  const filterLocationInput = (arr, inputText) => {
+    const filteredOpts = arr?.filter(({ city }) => {
+      const cityLower = city.toLowerCase();
+      const inputLower = inputText.toLowerCase();
+      return cityLower.includes(inputLower);
+    });
+    setLocations(filteredOpts);
+  };
+  const handleInput = (e) => {
+    const textValue = e.target.value;
+    setInput(textValue);
+  };
+
+  useEffect(() => {
+    if (!input.trim() || input === "") {
+      setLocations([]);
+      return;
+    }
+    filterLocationInput(response, input.trim());
+  }, [response, input]);
 
   return (
     <div
@@ -41,6 +65,8 @@ export default function Modal({ toggleView, modalView }) {
                 placeholder="Add location"
                 className="px-1"
                 onClick={toggleOptions}
+                onInput={handleInput}
+                value={input}
               />
             </div>
             <div className="py-2 px-4 flex flex-col lg:flex-1 border-b-0">
@@ -84,7 +110,12 @@ export default function Modal({ toggleView, modalView }) {
             className={`option-locations flex flex-col py-2 px-4 gap-2 ${
               modalView ? "" : "hidden"
             } ${activeOptionLocation}`}
-          ></ul>
+          >
+            {
+              locations?.map((location) => (
+                <LocationOption location={location} key={location.id} />
+              ))}
+          </ul>
 
           <ul
             className={`option-guests mx-[calc(100%/3)] flex flex-col py-2 px-4 gap-6 ${activeOptionGuest}`}
