@@ -111,10 +111,13 @@ export default function Modal({ toggleView, modalView, response }) {
               modalView ? "" : "hidden"
             } ${activeOptionLocation}`}
           >
-            {
-              locations?.map((location) => (
-                <LocationOption location={location} key={location.id} />
-              ))}
+            {locations?.map((location) => (
+              <LocationOption
+                key={location.id}
+                location={location}
+                setInput={setInput}
+              />
+            ))}
           </ul>
 
           <ul
