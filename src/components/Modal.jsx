@@ -1,4 +1,19 @@
+import { useState } from "react";
+
 export default function Modal({ toggleView, modalView }) {
+  const [activeOption, setActiveOption] = useState("");
+  const activeOptionGuest = activeOption === "guest" ? "" : "hidden";
+  const activeOptionLocation = activeOption === "location" ? "" : "hidden";
+
+  const toggleOptions = (e) => {
+    const btnClicked = e.target.id;
+    if (btnClicked === "location") {
+      setActiveOption("location");
+    } else if (btnClicked === "guest") {
+      setActiveOption("guest");
+    }
+  };
+
   return (
     <div
       id="modal"
@@ -25,6 +40,7 @@ export default function Modal({ toggleView, modalView }) {
                 name="location"
                 placeholder="Add location"
                 className="px-1"
+                onClick={toggleOptions}
               />
             </div>
             <div className="py-2 px-4 flex flex-col lg:flex-1 border-b-0">
@@ -40,6 +56,7 @@ export default function Modal({ toggleView, modalView }) {
                 name="guest"
                 placeholder="Add guests"
                 className="px-1 focus:outline-none hover:cursor-pointer"
+                onClick={toggleOptions}
                 readOnly
               />
             </div>
@@ -66,10 +83,12 @@ export default function Modal({ toggleView, modalView }) {
           <ul
             className={`option-locations flex flex-col py-2 px-4 gap-2 ${
               modalView ? "" : "hidden"
-            }`}
+            } ${activeOptionLocation}`}
           ></ul>
 
-          <ul className="option-guests mx-[calc(100%/3)] flex flex-col py-2 px-4 gap-6 hidden">
+          <ul
+            className={`option-guests mx-[calc(100%/3)] flex flex-col py-2 px-4 gap-6 ${activeOptionGuest}`}
+          >
             <li className="flex flex-col">
               <h3 className="font-semibold">Adults</h3>
               <p className="text-gray-500">Ages 13 or above</p>

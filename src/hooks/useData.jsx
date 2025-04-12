@@ -6,7 +6,7 @@ export default function useData(url) {
   const [error, setError] = useState("");
   const [response, setResponse] = useState(null);
 
-  async function getData() {
+  async function getData(url) {
     setLoading(true);
     try {
       const { data } = await axios.get(url);
@@ -20,7 +20,7 @@ export default function useData(url) {
   }
 
   useEffect(() => {
-    getData();
+    getData(url);
   }, [url]);
 
   return {
