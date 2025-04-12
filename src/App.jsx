@@ -7,6 +7,9 @@ import useData from "./hooks/useData";
 function App() {
   const { loading, response, error } = useData("/data/stays.json");
   const [modalView, setModalView] = useState(false);
+  const [countAdult, setCountAdult] = useState(0);
+  const [countChildren, setCountChildren] = useState(0);
+
   const toggleView = () => {
     setModalView((prevState) => !prevState);
   };
@@ -19,6 +22,10 @@ function App() {
         toggleView={toggleView}
         modalView={modalView}
         response={response}
+        countAdult={countAdult}
+        setCountAdult={setCountAdult}
+        countChildren={countChildren}
+        setCountChildren={setCountChildren}
       />
     </>
   );

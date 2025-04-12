@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
 import LocationOption from "./LocationOption";
 
-export default function Modal({ toggleView, modalView, response }) {
+export default function Modal({
+  toggleView,
+  modalView,
+  response,
+  countAdult,
+  setCountAdult,
+  countChildren,
+  setCountChildren,
+}) {
   const [activeOption, setActiveOption] = useState("");
   const [input, setInput] = useState("");
   const [locations, setLocations] = useState([]);
   const activeOptionGuest = activeOption === "guest" ? "" : "hidden";
   const activeOptionLocation = activeOption === "location" ? "" : "hidden";
+  const guestCount =
+    countAdult + countChildren === 0
+      ? ""
+      : `${countAdult + countChildren} guests`;
 
   const toggleOptions = (e) => {
     const btnClicked = e.target.id;
@@ -29,6 +41,35 @@ export default function Modal({ toggleView, modalView, response }) {
     const textValue = e.target.value;
     setInput(textValue);
   };
+
+  function handleClickBtns(e) {
+    const btnClicked = e.target.id;
+
+    // Validate numbers (no negative)
+    if (btnClicked === "decAdultBtn" && countAdult === 0) return;
+    if (btnClicked === "decChildrenBtn" && countChildren === 0) return;
+
+    switch (btnClicked) {
+      case "decAdultBtn":
+        setCountAdult((prev) => prev - 1);
+        break;
+
+      case "incAdultBtn":
+        setCountAdult((prev) => prev + 1);
+        break;
+
+      case "decChildrenBtn":
+        setCountChildren((prev) => prev - 1);
+        break;
+
+      case "incChildrenBtn":
+        setCountChildren((prev) => prev + 1);
+        break;
+
+      default:
+        break;
+    }
+  }
 
   useEffect(() => {
     if (!input.trim() || input === "") {
@@ -83,6 +124,7 @@ export default function Modal({ toggleView, modalView, response }) {
                 placeholder="Add guests"
                 className="px-1 focus:outline-none hover:cursor-pointer"
                 onClick={toggleOptions}
+                value={guestCount}
                 readOnly
               />
             </div>
@@ -130,15 +172,17 @@ export default function Modal({ toggleView, modalView, response }) {
                 <button
                   id="decAdultBtn"
                   className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
+                  onClick={(e) => handleClickBtns(e)}
                 >
                   -
                 </button>
                 <p id="adultCount" className="font-bold">
-                  0
+                  {countAdult}
                 </p>
                 <button
                   id="incAdultBtn"
                   className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
+                  onClick={(e) => handleClickBtns(e)}
                 >
                   +
                 </button>
@@ -152,15 +196,17 @@ export default function Modal({ toggleView, modalView, response }) {
                 <button
                   id="decChildrenBtn"
                   className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
+                  onClick={(e) => handleClickBtns(e)}
                 >
                   -
                 </button>
                 <p id="childrenCount" className="font-bold">
-                  0
+                  {countChildren}
                 </p>
                 <button
                   id="incChildrenBtn"
                   className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
+                  onClick={(e) => handleClickBtns(e)}
                 >
                   +
                 </button>
