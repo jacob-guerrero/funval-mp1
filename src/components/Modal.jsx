@@ -9,10 +9,12 @@ export default function Modal({
   setCountAdult,
   countChildren,
   setCountChildren,
+  handleSubmit,
 }) {
   const [activeOption, setActiveOption] = useState("");
   const [input, setInput] = useState("");
   const [locations, setLocations] = useState([]);
+
   const activeOptionGuest = activeOption === "guest" ? "" : "hidden";
   const activeOptionLocation = activeOption === "location" ? "" : "hidden";
   const guestCount =
@@ -93,7 +95,7 @@ export default function Modal({
             <img src="/icons/close.svg" alt="close" className="w-6" />
           </button>
         </div>
-        <form id="contactForm">
+        <form id="contactForm" onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col border-1 border-gray-300 rounded-2xl shadow-[0px_4px_14px_2px_rgba(0,0,0,0.08)] divide-y-1 divide-gray-300 lg:flex-row lg:divide-x-1 lg:divide-y-0 lg:justify-between">
             <div className="py-2 px-4 flex flex-col lg:flex-1">
               <label htmlFor="location" className="font-semibold">
