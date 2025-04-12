@@ -10,9 +10,10 @@ export default function Modal({
   countChildren,
   setCountChildren,
   handleSubmit,
+  input,
+  setInput,
 }) {
   const [activeOption, setActiveOption] = useState("");
-  const [input, setInput] = useState("");
   const [locations, setLocations] = useState([]);
 
   const activeOptionGuest = activeOption === "guest" ? "" : "hidden";

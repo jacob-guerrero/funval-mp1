@@ -5,11 +5,12 @@ import Modal from "./components/Modal";
 import useData from "./hooks/useData";
 
 function App() {
-  const { loading, response, error } = useData("/data/stays.json");
+  const { loading, response } = useData("/data/stays.json");
   const [staysView, setStaysView] = useState([]);
   const [modalView, setModalView] = useState(false);
   const [countAdult, setCountAdult] = useState(0);
   const [countChildren, setCountChildren] = useState(0);
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     response && setStaysView(response);
@@ -45,17 +46,20 @@ function App() {
     const locationValue = formData.get("location").split(",")[0];
     const guestValue = +formData.get("guest").split(" ")[0];
 
-    console.log(locationValue, guestValue);
     const filteredArr = filterResults(response, locationValue, guestValue);
-    console.log(filteredArr);
     setStaysView(filteredArr);
     toggleView();
   };
 
   return (
     <>
-      <Header toggleView={toggleView} />
-      <Main loading={loading} response={staysView} error={error} />
+      <Header
+        toggleView={toggleView}
+        countAdult={countAdult}
+        countChildren={countChildren}
+        location={input}
+      />
+      <Main loading={loading} response={staysView} location={input} />
       <Modal
         toggleView={toggleView}
         modalView={modalView}
@@ -65,6 +69,8 @@ function App() {
         countChildren={countChildren}
         setCountChildren={setCountChildren}
         handleSubmit={handleSubmit}
+        input={input}
+        setInput={setInput}
       />
     </>
   );

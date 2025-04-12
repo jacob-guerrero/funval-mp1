@@ -1,4 +1,15 @@
-export default function Header({ toggleView }) {
+export default function Header({
+  toggleView,
+  countAdult,
+  countChildren,
+  location,
+}) {
+  const guestCount =
+    countAdult + countChildren === 0
+      ? "Add guests"
+      : `${countAdult + countChildren} guests`;
+  const locationValue = location === "" ? "Add location" : location;
+
   return (
     <header className="flex justify-center p-2 md:p-5">
       <div className="w-full max-w-5xl gap-4 flex flex-col md:flex-row md:justify-between">
@@ -14,13 +25,13 @@ export default function Header({ toggleView }) {
             id="search-location-btn"
             className="w-full px-2 py-4 text-center text-gray-400 hover:cursor-pointer"
           >
-            Add location
+            {locationValue}
           </button>
           <button
             id="search-guest-btn"
             className="w-full px-2 py-4 text-center text-gray-400 hover:cursor-pointer"
           >
-            Add guest
+            {guestCount}
           </button>
           <button className="w-full px-2 py-4 flex justify-center items-center hover:cursor-pointer">
             <img src="/icons/search.svg" alt="search" className="w-6" />
