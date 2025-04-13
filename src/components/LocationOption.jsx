@@ -1,7 +1,7 @@
-export default function LocationOption({ location, setInput }) {
+export default function LocationOption({ location, setLocation }) {
   const { city, country } = location;
   const handleSelection = () => {
-    setInput(`${city}, ${country}`);
+    setLocation(`${city}, ${country}`);
   };
 
   return (

@@ -3,14 +3,13 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import Modal from "./components/Modal";
 import useData from "./hooks/useData";
+import { AppProvider } from "./context/AppProvider";
 
 function App() {
   const { loading, response } = useData("/data/stays.json");
   const [staysView, setStaysView] = useState([]);
   const [modalView, setModalView] = useState(false);
-  const [countAdult, setCountAdult] = useState(0);
-  const [countChildren, setCountChildren] = useState(0);
-  const [input, setInput] = useState("");
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     response && setStaysView(response);
@@ -43,9 +42,10 @@ function App() {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const locationValue = formData.get("location").split(",")[0];
+    const locationValue = formData.get("location").split(",")[0].trim();
     const guestValue = +formData.get("guest").split(" ")[0];
 
+    console.log(locationValue);
     const filteredArr = filterResults(response, locationValue, guestValue);
     setStaysView(filteredArr);
     toggleView();
@@ -53,25 +53,18 @@ function App() {
 
   return (
     <>
-      <Header
-        toggleView={toggleView}
-        countAdult={countAdult}
-        countChildren={countChildren}
-        location={input}
-      />
-      <Main loading={loading} response={staysView} location={input} />
-      <Modal
-        toggleView={toggleView}
-        modalView={modalView}
-        response={response}
-        countAdult={countAdult}
-        setCountAdult={setCountAdult}
-        countChildren={countChildren}
-        setCountChildren={setCountChildren}
-        handleSubmit={handleSubmit}
-        input={input}
-        setInput={setInput}
-      />
+      <AppProvider>
+        <Header toggleView={toggleView} location={location} />
+        <Main loading={loading} response={staysView} location={location} />
+        <Modal
+          response={response}
+          handleSubmit={handleSubmit}
+          location={location}
+          setLocation={setLocation}
+          modalView={modalView}
+          toggleView={toggleView}
+        />
+      </AppProvider>
     </>
   );
 }

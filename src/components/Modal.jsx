@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
 import LocationOption from "./LocationOption";
 
 export default function Modal({
+  response,
+  handleSubmit,
+  location,
+  setLocation,
   toggleView,
   modalView,
-  response,
-  countAdult,
-  setCountAdult,
-  countChildren,
-  setCountChildren,
-  handleSubmit,
-  input,
-  setInput,
 }) {
+  const { countAdult, countChildren, setCountAdult, setCountChildren } =
+    useContext(AppContext);
   const [activeOption, setActiveOption] = useState("");
   const [locations, setLocations] = useState([]);
 
@@ -42,7 +41,7 @@ export default function Modal({
   };
   const handleInput = (e) => {
     const textValue = e.target.value;
-    setInput(textValue);
+    setLocation(textValue);
   };
 
   function handleClickBtns(e) {
@@ -75,12 +74,12 @@ export default function Modal({
   }
 
   useEffect(() => {
-    if (!input.trim() || input === "") {
+    if (!location.trim() || location === "") {
       setLocations([]);
       return;
     }
-    filterLocationInput(response, input.trim());
-  }, [response, input]);
+    filterLocationInput(response, location.trim());
+  }, [response, location]);
 
   return (
     <div
@@ -110,7 +109,7 @@ export default function Modal({
                 className="px-1"
                 onClick={toggleOptions}
                 onInput={handleInput}
-                value={input}
+                value={location}
               />
             </div>
             <div className="py-2 px-4 flex flex-col lg:flex-1 border-b-0">
@@ -160,7 +159,7 @@ export default function Modal({
               <LocationOption
                 key={location.id}
                 location={location}
-                setInput={setInput}
+                setLocation={setLocation}
               />
             ))}
           </ul>
