@@ -45,7 +45,6 @@ function App() {
     const locationValue = formData.get("location").split(",")[0].trim();
     const guestValue = +formData.get("guest").split(" ")[0];
 
-    console.log(locationValue);
     const filteredArr = filterResults(response, locationValue, guestValue);
     setStaysView(filteredArr);
     toggleView();

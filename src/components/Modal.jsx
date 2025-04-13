@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import LocationOption from "./LocationOption";
+import GuestOption from "./GuestOption";
+import Form from "./Form";
 
 export default function Modal({
   response,
@@ -17,19 +19,6 @@ export default function Modal({
 
   const activeOptionGuest = activeOption === "guest" ? "" : "hidden";
   const activeOptionLocation = activeOption === "location" ? "" : "hidden";
-  const guestCount =
-    countAdult + countChildren === 0
-      ? ""
-      : `${countAdult + countChildren} guests`;
-
-  const toggleOptions = (e) => {
-    const btnClicked = e.target.id;
-    if (btnClicked === "location") {
-      setActiveOption("location");
-    } else if (btnClicked === "guest") {
-      setActiveOption("guest");
-    }
-  };
 
   const filterLocationInput = (arr, inputText) => {
     const filteredOpts = arr?.filter(({ city }) => {
@@ -38,10 +27,6 @@ export default function Modal({
       return cityLower.includes(inputLower);
     });
     setLocations(filteredOpts);
-  };
-  const handleInput = (e) => {
-    const textValue = e.target.value;
-    setLocation(textValue);
   };
 
   function handleClickBtns(e) {
@@ -95,59 +80,12 @@ export default function Modal({
             <img src="/icons/close.svg" alt="close" className="w-6" />
           </button>
         </div>
-        <form id="contactForm" onSubmit={(e) => handleSubmit(e)}>
-          <div className="flex flex-col border-1 border-gray-300 rounded-2xl shadow-[0px_4px_14px_2px_rgba(0,0,0,0.08)] divide-y-1 divide-gray-300 lg:flex-row lg:divide-x-1 lg:divide-y-0 lg:justify-between">
-            <div className="py-2 px-4 flex flex-col lg:flex-1">
-              <label htmlFor="location" className="font-semibold">
-                LOCATION
-              </label>
-              <input
-                type="search"
-                id="location"
-                name="location"
-                placeholder="Add location"
-                className="px-1"
-                onClick={toggleOptions}
-                onInput={handleInput}
-                value={location}
-              />
-            </div>
-            <div className="py-2 px-4 flex flex-col lg:flex-1 border-b-0">
-              <label
-                htmlFor="guest"
-                className="font-semibold hover:cursor-pointer"
-              >
-                GUESTS
-              </label>
-              <input
-                type="text"
-                id="guest"
-                name="guest"
-                placeholder="Add guests"
-                className="px-1 focus:outline-none hover:cursor-pointer"
-                onClick={toggleOptions}
-                value={guestCount}
-                readOnly
-              />
-            </div>
-
-            <div className="py-2 px-4 justify-center items-center hidden lg:flex lg:flex-1">
-              <button
-                id="search-btn"
-                type="submit"
-                form="contactForm"
-                className="w-max py-2 px-4 flex gap-2 bg-[#eb5757] rounded-xl text-white hover:cursor-pointer"
-              >
-                <img
-                  src="/icons/search-white.svg"
-                  alt="search"
-                  className="w-6"
-                />
-                <p>Search</p>
-              </button>
-            </div>
-          </div>
-        </form>
+        <Form
+          location={location}
+          setActiveOption={setActiveOption}
+          handleSubmit={handleSubmit}
+          setLocation={setLocation}
+        />
 
         <div className="options lg:flex">
           <ul
@@ -167,53 +105,18 @@ export default function Modal({
           <ul
             className={`option-guests mx-[calc(100%/3)] flex flex-col py-2 px-4 gap-6 ${activeOptionGuest}`}
           >
-            <li className="flex flex-col">
-              <h3 className="font-semibold">Adults</h3>
-              <p className="text-gray-500">Ages 13 or above</p>
-              <div className="mt-2 flex gap-4">
-                <button
-                  id="decAdultBtn"
-                  className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
-                  onClick={(e) => handleClickBtns(e)}
-                >
-                  -
-                </button>
-                <p id="adultCount" className="font-bold">
-                  {countAdult}
-                </p>
-                <button
-                  id="incAdultBtn"
-                  className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
-                  onClick={(e) => handleClickBtns(e)}
-                >
-                  +
-                </button>
-              </div>
-            </li>
-
-            <li className="flex flex-col">
-              <h3 className="font-semibold">Children</h3>
-              <p className="text-gray-500">Ages 13 or below</p>
-              <div className="mt-2 flex gap-4">
-                <button
-                  id="decChildrenBtn"
-                  className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
-                  onClick={(e) => handleClickBtns(e)}
-                >
-                  -
-                </button>
-                <p id="childrenCount" className="font-bold">
-                  {countChildren}
-                </p>
-                <button
-                  id="incChildrenBtn"
-                  className="w-6 h-6 flex justify-center items-center border-1 border-slate-900 rounded-sm"
-                  onClick={(e) => handleClickBtns(e)}
-                >
-                  +
-                </button>
-              </div>
-            </li>
+            <GuestOption
+              title="Adults"
+              description="Ages 13 or above"
+              count={countAdult}
+              handleClickBtns={(e) => handleClickBtns(e)}
+            />
+            <GuestOption
+              title="Children"
+              description="Ages 13 or below"
+              count={countChildren}
+              handleClickBtns={(e) => handleClickBtns(e)}
+            />
           </ul>
         </div>
 
